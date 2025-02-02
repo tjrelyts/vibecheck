@@ -17,7 +17,10 @@ web-based sentiment analyzer
 <p align="center"> <code>vibecheck</code> is a <strong>sentiment analysis web-app</strong>.</p>
 <p align="center"> It classifies text into three sentiment categories: <strong>positive</strong>, <strong>negative</strong>, or <strong>neutral</strong>.
 
-![Demo gif](https://github.com/tjrelyts/vibecheck/blob/main/img/demo.gif)
+<div align="center">
+  <img src="https://github.com/tjrelyts/vibecheck/blob/main/img/demo.gif" alt="Demo gif">
+</div>
+
 
 <h2>Future Improvements</h2>
 
