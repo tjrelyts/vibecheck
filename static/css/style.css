@@ -1,23 +1,146 @@
+/* Base styles */
+:root {
+  --primary-color: #007bff;
+  --bg-dark: #1a1a1a;
+  --text-light: #f8f9fa;
+}
+
+body {
+  background-color: var(--bg-dark) !important;
+  font-family: 'Courier New', monospace;
+  transition: background-color 0.5s ease;
+}
+
+/* ASCII Logo */
+.ascii-logo {
+  color: var(--primary-color);
+  white-space: pre;
+  font-size: 0.6rem;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+  user-select: none;
+}
+
+/* Form elements */
 textarea {
   resize: none;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-light) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+textarea:focus {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 0.5rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Results section */
+#sentiment-result {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: var(--text-light);
+  min-height: 4rem;
+}
+
+#sentiment-result.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.bg-success {
+  background-color: #198754 !important;
+}
+
+body.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+body.bg-dark {
+  background-color: var(--bg-dark) !important;
+}
+
+/* History section */
+.history-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.history-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Style the list items in history */
+#message-history {
+  background: transparent;
+}
+
+#message-history .list-group-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  padding: 0.75rem;
+}
+
+#message-history .list-group-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 #message,
 #analysis,
 #timestamp {
-  width: calc(33.33% - 10px); /* Adjusted width to account for margins */
+  width: calc(33.33% - 10px);
   word-wrap: break-word;
   flex: 1;
+  color: var(--text-light);
+  font-size: 1rem;
 }
 
-#message {
-  text-align: left; /* Aligns message text to the left */
-}
+#message { text-align: left; }
+#analysis { text-align: center; }
+#timestamp { text-align: right; }
 
-#analysis {
-  text-align: center; /* Aligns analysis text to the center */
-}
-
-#timestamp {
-  text-align: right; /* Aligns timestamp text to the right */
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #message-history .list-group-item {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  #message,
+  #analysis,
+  #timestamp {
+    font-size: 0.85rem;
+    width: calc(33.33% - 5px); /* Slightly reduce margins on mobile */
+  }
 }

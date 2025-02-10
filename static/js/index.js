@@ -1,12 +1,37 @@
 const form = document.getElementById("sentiment-form");
 const clearButton = document.getElementById("clear-btn");
 const messageHistory = document.getElementById("message-history");
-const maxMessages = 5;
+let maxMessages = 5;
+
+// Function to update max messages based on screen size
+function updateMaxMessages() {
+  if (window.innerWidth < 1024) { 
+    maxMessages = 3;
+  } else {
+    maxMessages = 5;
+  }
+  
+  // Trim existing messages if needed
+  while (messageHistory.children.length > maxMessages) {
+    messageHistory.removeChild(messageHistory.firstChild);
+  }
+  
+  // Update localStorage to match
+  const messages = Array.from(messageHistory.children).map((child) => {
+    return {
+      message: child.children[0].textContent,
+      analysis: child.children[1].textContent,
+      timestamp: new Date(child.children[2].textContent).getTime(),
+    };
+  });
+  localStorage.setItem("messages", JSON.stringify(messages));
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   function loadMessages() {
     const messages = JSON.parse(localStorage.getItem("messages")) || [];
-    messages.forEach((item) => {
+    // Only load up to maxMessages
+    messages.slice(-maxMessages).forEach((item) => {
       const listItem = createMessageItem(
         item.message,
         item.analysis,
@@ -16,6 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Update max messages and load messages
+  updateMaxMessages();
   loadMessages();
 
   function createMessageItem(message, analysis, timestamp) {
@@ -54,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         messageHistory.appendChild(listItem);
 
         if (messageHistory.children.length > maxMessages) {
-          messageHistory.removeChild(messageHistory.children[0]);
+          messageHistory.removeChild(messageHistory.firstChild);
         }
 
         const messages = Array.from(messageHistory.children).map((child) => {
@@ -87,10 +114,18 @@ function analyzeSentiment(message, callback) {
   })
     .then((response) => response.json())
     .then((data) => {
-      callback(data.sentiment);
+      // Update the result first
       updatePage(data.sentiment);
+      // Then call the callback for history update
+      callback(data.sentiment);
     })
-    .catch((error) => console.error("Error:", error));
+    .catch((error) => {
+      console.error("Error:", error);
+      // Show error in result
+      let result = document.getElementById("sentiment-result");
+      result.textContent = "❌ Error analyzing sentiment";
+      result.classList.add("show");
+    });
 }
 
 function updatePage(sentiment) {
@@ -98,26 +133,35 @@ function updatePage(sentiment) {
   let icon = document.querySelector('link[rel="icon"]');
   let result = document.getElementById("sentiment-result");
 
-  switch (sentiment) {
-    case "positive":
-      body.classList.remove("bg-dark", "bg-danger");
-      body.classList.add("bg-success");
-      icon.href = "/static/assets/favicon1.ico";
-      result.textContent = "Positive";
-      break;
-    case "negative":
-      body.classList.remove("bg-dark", "bg-success");
-      body.classList.add("bg-danger");
-      icon.href = "/static/assets/favicon2.ico";
-      result.textContent = "Negative";
-      break;
-    default:
-      body.classList.remove("bg-danger", "bg-success");
-      body.classList.add("bg-dark");
-      icon.href = "/static/assets/favicon0.ico";
-      result.textContent = "Neutral";
-      break;
-  }
+  // First remove show class to trigger animation
+  result.classList.remove("show");
+  
+  // Update after a small delay to allow animation
+  setTimeout(() => {
+    switch (sentiment) {
+      case "positive":
+        body.classList.remove("bg-dark", "bg-danger");
+        body.classList.add("bg-success");
+        icon.href = "/static/assets/favicon1.ico";
+        result.textContent = "😊 Positive";
+        break;
+      case "negative":
+        body.classList.remove("bg-dark", "bg-success");
+        body.classList.add("bg-danger");
+        icon.href = "/static/assets/favicon2.ico";
+        result.textContent = "😔 Negative";
+        break;
+      default:
+        body.classList.remove("bg-danger", "bg-success");
+        body.classList.add("bg-dark");
+        icon.href = "/static/assets/favicon0.ico";
+        result.textContent = "😐 Neutral";
+        break;
+    }
+    
+    // Add show class to trigger animation
+    result.classList.add("show");
+  }, 100);
 }
 
 function setCharacterLimit() {
@@ -134,4 +178,7 @@ function setCharacterLimit() {
 
 setCharacterLimit();
 
-window.addEventListener("resize", setCharacterLimit);
+window.addEventListener("resize", function() {
+  updateMaxMessages();
+  setCharacterLimit();
+});
