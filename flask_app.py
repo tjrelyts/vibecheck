@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+import git
 import os
 import pickle
 
@@ -100,7 +101,6 @@ def webhook():
         build_commit = f'build_commit = "{commit_hash}"'
         print(f'{build_commit}')
         return 'Updated PythonAnywhere server to commit {commit}'.format(commit=commit_hash)
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
