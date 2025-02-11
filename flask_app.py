@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import os
 import pickle
-#test
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 model_path = os.path.join(BASE_DIR, 'data/model.pkl')
