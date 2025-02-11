@@ -4,10 +4,10 @@ import pickle
 
 app = Flask(__name__)
 
-with open(os.path.abspath('data/model.pkl'), 'rb') as f:
+with open(os.path.abspath('./data/model.pkl'), 'rb') as f:
     model = pickle.load(f)
 
-with open(os.path.abspath('data/vectorizer.pkl'), 'rb') as f:
+with open(os.path.abspath('./data/vectorizer.pkl'), 'rb') as f:
     vectorizer = pickle.load(f)
 
 def analyze(str):
