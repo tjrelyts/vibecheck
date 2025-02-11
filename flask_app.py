@@ -43,5 +43,12 @@ def analyze_sentiment():
 def home():
     return render_template('base.html')
 
+@app.route('/update_server', methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        repo = git.Repo('path/to/git_repo')
+        origin = repo.remotes.origin
+    origin.pull()
+
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
