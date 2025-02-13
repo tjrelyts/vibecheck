@@ -31,4 +31,4 @@ jobs:
       - name: Deploy to Heroku
         run: |
           git remote add heroku https://git.heroku.com/flask-ci-cd-pipeline.git 
-          push heroku main 
+          git push heroku main 
