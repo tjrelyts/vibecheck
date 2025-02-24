@@ -13,7 +13,7 @@ web-based sentiment analyzer
 </div>
 <hr></hr>
 
-<div align="center"> <a href="https://santoswaso.pythonanywhere.com"> <img src="https://img.shields.io/badge/try%20it%20here-blue?link=https%3A%2F%2Fsantoswaso.pythonanywhere.com%2F" alt="Static Badge"> </a> </div>
+<div align="center"> <a href="https://vibecheck-app-8e9f5148afc1.herokuapp.com/"> <img src="https://img.shields.io/badge/try%20it%20here-blue?link=https%3A%2F%2Fsantoswaso.pythonanywhere.com%2F" alt="Static Badge"> </a> </div>
 <p align="center"> <code>vibecheck</code> is a <strong>sentiment analysis web-app</strong>.</p>
 <p align="center"> It classifies text into three sentiment categories: <strong>positive</strong>, <strong>negative</strong>, or <strong>neutral</strong>.
 
