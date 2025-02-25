@@ -32,7 +32,7 @@ web-based sentiment analyzer
 	- <strong>Solution:</strong> Leveraged <strong>Pickle</strong> to serialize the model and vectorizer, ensuring smooth deployment.
 
 <h2>Results</h2>
-Currently, <code>vibecheck</code> is successfully deployed as a live web application using <a href="https://www.pythonanywhere.com/"><strong>PythonAnywhere</strong></a>. The app provides real-time sentiment analysis and is accessible to all users with a web browser and an internet connection. Key accomplishments include:
+Currently, <code>vibecheck</code> is successfully deployed as a live web application using <a href="https://www.pythonanywhere.com/"><strong>PythonAnywhere</strong></a>. Using GitHub webhooks, the app is automatically deployed whenever a commit is pushed to the repository. The app provides real-time sentiment analysis and is accessible to all users with a web browser and an internet connection. Key accomplishments include:
 
 - Building a sentiment analysis model with **scikit-learn** and deploying it with **Flask**.
 - Ensuring the web app provides real-time feedback on user inputs.
