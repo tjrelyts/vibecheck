@@ -75,8 +75,6 @@ def deploy():
         try:
             # Pull the latest changes from the repository
             subprocess.check_call(['git', 'pull', 'origin', 'main'], cwd=BASE_DIR)
-            subprocess.check_call(['pip', 'install', '-r', os.path.join(BASE_DIR, 'requirements.txt')])
-            subprocess.check_call(['touch', os.path.join(BASE_DIR, 'yourproject.wsgi')])
 
             return jsonify({"message": "Deployment triggered!"}), 200
         except subprocess.CalledProcessError as e:
