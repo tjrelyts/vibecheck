@@ -5,6 +5,8 @@ from flask import Flask, render_template, request, jsonify
 import os
 import pickle
 
+print ("Hello World")
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
