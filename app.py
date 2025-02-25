@@ -5,8 +5,6 @@ from flask import Flask, render_template, request, jsonify
 import os
 import pickle
 
-print ("Hello World")
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
@@ -26,10 +24,10 @@ with open(vectorizer_path, 'rb') as f:
     vectorizer = pickle.load(f)
 
 def verify_signature(payload, signature):
-    # 'sha1=' is prefixed to the signature sent by GitHub
     secret = SECRET_KEY.encode()
-    hash_object = hmac.new(secret, payload, hashlib.sha1)
-    expected_signature = 'sha1=' + hash_object.hexdigest()
+    # Use SHA256 instead of SHA1 for better security
+    hash_object = hmac.new(secret, payload, hashlib.sha256)
+    expected_signature = 'sha256=' + hash_object.hexdigest()
     return hmac.compare_digest(expected_signature, signature)
 
 def analyze(str):
@@ -69,19 +67,24 @@ def deploy():
     if not verify_signature(data, signature):
         return jsonify({"message": "Invalid signature"}), 400
 
-    # Continue with the deployment process if the signature is valid
     payload = request.get_json()
 
     if payload['ref'] == 'refs/heads/main':
         print("Deploying latest changes from the repository...")
-        
-        subprocess.call(['git', 'pull', 'origin', 'main'], cwd=BASE_DIR)
-        subprocess.call(['pip', 'install', '-r', os.path.join(BASE_DIR, 'requirements.txt')])
-        subprocess.call(['touch', os.path.join(BASE_DIR, 'yourproject.wsgi')])
 
-        return jsonify({"message": "Deployment triggered!"}), 200
+        try:
+            # Pull the latest changes from the repository
+            subprocess.check_call(['git', 'pull', 'origin', 'main'], cwd=BASE_DIR)
+            subprocess.check_call(['pip', 'install', '-r', os.path.join(BASE_DIR, 'requirements.txt')])
+            subprocess.check_call(['touch', os.path.join(BASE_DIR, 'yourproject.wsgi')])
+
+            return jsonify({"message": "Deployment triggered!"}), 200
+        except subprocess.CalledProcessError as e:
+            print(f"Deployment failed: {e}")
+            return jsonify({"message": f"Deployment failed: {e}"}), 500
     else:
         return jsonify({"message": "Not from the 'main' branch."}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    # Ensure debug mode is off in production
+    app.run(debug=False)
